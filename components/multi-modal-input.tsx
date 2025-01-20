@@ -9,6 +9,7 @@ import { Paperclip } from "lucide-react";
 
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
+import { PreviewAttachment } from "@/components/preview-attachment";
 
 export const MultiModalInput = () => {
   const { messages, input, handleInputChange, handleSubmit } = useChat();
