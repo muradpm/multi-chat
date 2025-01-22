@@ -1,14 +1,24 @@
-import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar"
-import { AppSidebar } from "@/components/app-sidebar"
+import { cookies } from "next/headers";
 
-export default function Layout({ children }: { children: React.ReactNode }) {
+import { AppSidebar } from "@/components/app-sidebar";
+import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
+
+import { fetchQuery } from "convex/nextjs";
+import { api } from "@/convex/_generated/api";
+import { convexAuthNextjsToken } from "@convex-dev/auth/nextjs/server";
+
+export default async function Layout({ children }: { children: React.ReactNode }) {
+  const token = await convexAuthNextjsToken();
+  const [user, cookieStore] = await Promise.all([
+    fetchQuery(api.users.getUser, {}, { token }),
+    cookies(),
+  ]);
+  const isCollapsed = cookieStore.get("sidebar:state")?.value !== "true";
+
   return (
-    <SidebarProvider>
-      <AppSidebar />
-      <main>
-        <SidebarTrigger />
-        {children}
-      </main>
+    <SidebarProvider defaultOpen={!isCollapsed}>
+      <AppSidebar user={user} />
+      <SidebarInset>{children}</SidebarInset>
     </SidebarProvider>
-  )
+  );
 }

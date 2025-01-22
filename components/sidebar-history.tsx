@@ -1,15 +1,14 @@
 "use client";
+import { memo, useState } from "react";
 
 import { isToday, isYesterday, subMonths, subWeeks } from "date-fns";
+
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
-import { api } from "@/convex/_generated/api";
-import type { User } from "@auth/core/types";
-import { useQuery, useMutation } from "convex/react";
-import { Id } from "@/convex/_generated/dataModel";
-import { memo, useState } from "react";
-import { toast } from "sonner";
+
 import { CircleCheck, Globe, Lock, MoreHorizontal, Share, Trash } from "lucide-react";
+
+import { toast } from "sonner";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -39,7 +38,12 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar";
+
 import { useChatVisibility } from "@/hooks/use-chat-visibility";
+
+import { useQuery, useMutation } from "convex/react";
+import { api } from "@/convex/_generated/api";
+import { Doc, Id } from "@/convex/_generated/dataModel";
 
 type Chat = {
   id: Id<"chats">;
@@ -145,7 +149,7 @@ export const ChatItem = memo(PureChatItem, (prevProps, nextProps) => {
   return true;
 });
 
-export function SidebarHistory({ user }: { user: User | undefined }) {
+export function SidebarHistory({ user }: { user: Doc<"users"> | null }) {
   const { setOpenMobile } = useSidebar();
   const { id } = useParams();
 
@@ -172,7 +176,7 @@ export function SidebarHistory({ user }: { user: User | undefined }) {
 
   const history = useQuery(
     api.chats.getChatsByUserId,
-    user ? { userId: user.id as Id<"users"> } : "skip"
+    user ? { userId: user._id } : "skip"
   )?.map((chat) => ({
     id: chat._id,
     title: chat.title,

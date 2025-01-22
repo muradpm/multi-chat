@@ -1,11 +1,11 @@
 "use client";
 
-import { ChevronUp } from "lucide-react";
 import Image from "next/image";
-import type { User } from "@auth/core/types";
-import { useAuthActions } from "@convex-dev/auth/react";
 import { useTheme } from "next-themes";
 import { useRouter } from "next/navigation";
+
+import { ChevronUp } from "lucide-react";
+
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -15,7 +15,10 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { SidebarMenu, SidebarMenuButton, SidebarMenuItem } from "@/components/ui/sidebar";
 
-export function SidebarUserNav({ user }: { user: User }) {
+import { useAuthActions } from "@convex-dev/auth/react";
+import { Doc } from "@/convex/_generated/dataModel";
+
+export const SidebarUserNav = ({ user }: { user: Doc<"users"> }) => {
   const { setTheme, theme } = useTheme();
   const { signOut } = useAuthActions();
   const router = useRouter();
@@ -27,13 +30,13 @@ export function SidebarUserNav({ user }: { user: User }) {
           <DropdownMenuTrigger asChild>
             <SidebarMenuButton className="data-[state=open]:bg-sidebar-accent bg-background data-[state=open]:text-sidebar-accent-foreground h-10">
               <Image
-                src={user?.image ?? ""}
-                alt={user.email ?? ""}
+                src={user.image}
+                alt={user.email}
                 width={24}
                 height={24}
                 className="rounded-full"
               />
-              <span className="truncate">{user?.email}</span>
+              <span className="truncate">{user.email}</span>
               <ChevronUp className="ml-auto" />
             </SidebarMenuButton>
           </DropdownMenuTrigger>
@@ -62,4 +65,4 @@ export function SidebarUserNav({ user }: { user: User }) {
       </SidebarMenuItem>
     </SidebarMenu>
   );
-}
+};

@@ -1,11 +1,14 @@
 "use client";
 
-import type { User } from "@auth/core/types";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
+
 import { Plus } from "lucide-react";
+
 import { SidebarHistory } from "@/components/sidebar-history";
 import { SidebarUserNav } from "@/components/sidebar-user-nav";
 import { Button } from "@/components/ui/button";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import {
   Sidebar,
   SidebarContent,
@@ -14,10 +17,10 @@ import {
   SidebarMenu,
   useSidebar,
 } from "@/components/ui/sidebar";
-import Link from "next/link";
-import { Tooltip, TooltipContent, TooltipTrigger } from "./ui/tooltip";
 
-export function AppSidebar({ user }: { user: User | undefined }) {
+import { Doc } from "@/convex/_generated/dataModel";
+
+export const AppSidebar = ({ user }: { user: Doc<"users"> | null }) => {
   const router = useRouter();
   const { setOpenMobile } = useSidebar();
 
@@ -63,4 +66,4 @@ export function AppSidebar({ user }: { user: User | undefined }) {
       <SidebarFooter>{user && <SidebarUserNav user={user} />}</SidebarFooter>
     </Sidebar>
   );
-}
+};

@@ -1,4 +1,4 @@
-import { MultiModalInput } from "./multi-modal-input";
+import { MultiModalInput } from "@/components/multi-modal-input";
 
 export const Chat = () => {
   return (
