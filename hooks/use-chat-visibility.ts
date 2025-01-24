@@ -20,7 +20,6 @@ export function useChatVisibility({ chatId, initialVisibility }: UseChatVisibili
   const setVisibilityType = async (newVisibility: VisibilityType) => {
     setLocalVisibilityType(newVisibility);
 
-    // Only update in database if it's a Convex ID
     if (typeof chatId === "object" && "_id" in chatId) {
       try {
         await updateVisibility({
@@ -28,7 +27,6 @@ export function useChatVisibility({ chatId, initialVisibility }: UseChatVisibili
           visibility: newVisibility,
         });
       } catch (error) {
-        // Revert on error
         setLocalVisibilityType(visibilityType);
         console.error("Failed to update visibility:", error);
       }

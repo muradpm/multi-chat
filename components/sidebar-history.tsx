@@ -90,7 +90,7 @@ const PureChatItem = ({
             className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground mr-0.5"
             showOnHover={!isActive}
           >
-            <MoreHorizontal size={12} />
+            <MoreHorizontal className="w-4 h-4" />
             <span className="sr-only">More</span>
           </SidebarMenuAction>
         </DropdownMenuTrigger>
@@ -98,7 +98,7 @@ const PureChatItem = ({
         <DropdownMenuContent side="bottom" align="end">
           <DropdownMenuSub>
             <DropdownMenuSubTrigger className="cursor-pointer">
-              <Share size={12} />
+              <Share className="w-4 h-4" />
               <span>Share</span>
             </DropdownMenuSubTrigger>
             <DropdownMenuPortal>
@@ -110,10 +110,12 @@ const PureChatItem = ({
                   }}
                 >
                   <div className="flex flex-row gap-2 items-center">
-                    <Lock size={12} />
+                    <Lock className="w-4 h-4" />
                     <span>Private</span>
                   </div>
-                  {visibilityType === "private" ? <CircleCheck size={12} /> : null}
+                  {visibilityType === "private" ? (
+                    <CircleCheck className="w-4 h-4" />
+                  ) : null}
                 </DropdownMenuItem>
                 <DropdownMenuItem
                   className="cursor-pointer flex-row justify-between"
@@ -122,10 +124,12 @@ const PureChatItem = ({
                   }}
                 >
                   <div className="flex flex-row gap-2 items-center">
-                    <Globe size={12} />
+                    <Globe className="w-4 h-4" />
                     <span>Public</span>
                   </div>
-                  {visibilityType === "public" ? <CircleCheck size={12} /> : null}
+                  {visibilityType === "public" ? (
+                    <CircleCheck className="w-4 h-4" />
+                  ) : null}
                 </DropdownMenuItem>
               </DropdownMenuSubContent>
             </DropdownMenuPortal>
@@ -135,7 +139,7 @@ const PureChatItem = ({
             className="cursor-pointer text-destructive focus:bg-destructive/15 focus:text-destructive dark:text-red-500"
             onSelect={() => onDelete(chat.id)}
           >
-            <Trash size={12} />
+            <Trash className="w-4 h-4" />
             <span>Delete</span>
           </DropdownMenuItem>
         </DropdownMenuContent>
