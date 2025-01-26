@@ -16,17 +16,19 @@ import { Button } from "@/components/ui/button";
 import { VisibilityType, VisibilitySelector } from "@/components/visibility-selector";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 
-import { Unauthenticated } from "convex/react";
+import { Authenticated, Unauthenticated } from "convex/react";
 import { Id } from "@/convex/_generated/dataModel";
 
 function PureChatHeader({
   chatId,
   selectedModelId,
   selectedVisibilityType,
+  isReadonly,
 }: {
   chatId: Id<"chats">;
   selectedModelId: string;
   selectedVisibilityType: VisibilityType;
+  isReadonly: boolean;
 }) {
   const router = useRouter();
   const { open } = useSidebar();
@@ -56,13 +58,19 @@ function PureChatHeader({
         </Tooltip>
       )}
 
-      <ModelSelector selectedModelId={selectedModelId} className="order-1 md:order-2" />
+      {!isReadonly && (
+        <ModelSelector selectedModelId={selectedModelId} className="order-1 md:order-2" />
+      )}
 
-      <VisibilitySelector
-        chatId={chatId}
-        selectedVisibilityType={selectedVisibilityType}
-        className="order-1 md:order-3"
-      />
+      <Authenticated>
+        {!isReadonly && (
+          <VisibilitySelector
+            chatId={chatId}
+            selectedVisibilityType={selectedVisibilityType}
+            className="order-1 md:order-3"
+          />
+        )}
+      </Authenticated>
 
       <Unauthenticated>
         <Button

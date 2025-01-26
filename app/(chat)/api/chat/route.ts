@@ -5,7 +5,7 @@ import { customModel } from "@/lib/ai";
 export const maxDuration = 30;
 
 export async function POST(req: Request) {
-  const { messages, modelId } = await req.json();
+  const { messages, model: modelId } = await req.json();
 
   const model = models.find((model) => model.id === modelId);
 

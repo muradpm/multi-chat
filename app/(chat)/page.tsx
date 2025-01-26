@@ -16,9 +16,12 @@ export default async function ChatPage({ chatId }: { chatId: Id<"chats"> }) {
   return (
     <>
       <Chat
+        key={chatId}
         chatId={chatId}
+        initialMessages={[]}
         selectedModelId={selectedModelId}
         selectedVisibilityType="private"
+        isReadonly={false}
       />
     </>
   );
