@@ -8,7 +8,9 @@ const schema = defineSchema({
     name: v.string(),
     email: v.string(),
     image: v.string(),
-  }).index("by_email", ["email"]),
+    emailVerificationTime: v.optional(v.number()),
+    modelId: v.optional(v.string()),
+  }).index("email", ["email"]),
 
   chats: defineTable({
     title: v.string(),

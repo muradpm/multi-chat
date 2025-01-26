@@ -1,10 +1,12 @@
 "use client";
 
 import { startTransition, useMemo, useOptimistic, useState } from "react";
+import { useMutation, useQuery } from "convex/react";
+import { api } from "@/convex/_generated/api";
 
 import { CircleCheck, ChevronDown } from "lucide-react";
 
-import { models } from "@/lib/models";
+import { models } from "@/lib/ai/models";
 import { cn } from "@/lib/utils";
 
 import { Button } from "@/components/ui/button";
@@ -15,17 +17,15 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-export function ModelSelector({
-  selectedModelId,
-  className,
-}: {
-  selectedModelId: string;
-} & React.ComponentProps<typeof Button>) {
+export function ModelSelector({ className }: React.ComponentProps<typeof Button>) {
   const [open, setOpen] = useState(false);
-  const [optimisticModelId, setOptimisticModelId] = useOptimistic(selectedModelId);
+
+  const chatModelId = useQuery(api.users.getChatModel) ?? models[0].id;
+  const [optimisticModelId, setOptimisticModelId] = useOptimistic(chatModelId);
+  const updateChatModel = useMutation(api.users.updateChatModel);
 
   const selectedModel = useMemo(
-    () => models.find((model) => model.id === optimisticModelId),
+    () => models.find((model) => model.id === optimisticModelId) ?? models[0],
     [optimisticModelId]
   );
 
@@ -52,7 +52,7 @@ export function ModelSelector({
 
               startTransition(() => {
                 setOptimisticModelId(model.id);
-                // saveModelId(model.id);
+                updateChatModel({ modelId: model.id });
               });
             }}
             className="gap-4 group/item flex flex-row justify-between items-center"

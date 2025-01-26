@@ -20,6 +20,13 @@ export const createChat = mutation({
   },
 });
 
+export const getChatById = query({
+  args: { id: v.id("chats") },
+  handler: async (ctx, args) => {
+    return await ctx.db.get(args.id);
+  },
+});
+
 export const getChatsByUserId = query({
   args: {
     userId: v.id("users"),

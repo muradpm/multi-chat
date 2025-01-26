@@ -2,6 +2,9 @@
 
 import { useChat } from "ai/react";
 import { useRef, useState } from "react";
+import { useQuery } from "convex/react";
+import { api } from "@/convex/_generated/api";
+import { models } from "@/lib/ai/models";
 
 import Image from "next/image";
 
@@ -12,7 +15,13 @@ import { Button } from "@/components/ui/button";
 import { PreviewAttachment } from "@/components/preview-attachment";
 
 export const MultiModalInput = () => {
-  const { messages, input, handleInputChange, handleSubmit } = useChat();
+  const chatModelId = useQuery(api.users.getChatModel) ?? models[0].id;
+
+  const { messages, input, handleInputChange, handleSubmit } = useChat({
+    body: {
+      modelId: chatModelId,
+    },
+  });
 
   const [files, setFiles] = useState<FileList | undefined>(undefined);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -20,6 +29,9 @@ export const MultiModalInput = () => {
   const submitForm = (event: React.FormEvent) => {
     handleSubmit(event, {
       experimental_attachments: files,
+      data: {
+        modelId: chatModelId,
+      },
     });
 
     setFiles(undefined);
