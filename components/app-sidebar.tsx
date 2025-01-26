@@ -48,7 +48,7 @@ export const AppSidebar = ({ user }: { user: Doc<"users"> | null }) => {
                   className="p-2 h-fit"
                   onClick={() => {
                     setOpenMobile(false);
-                    router.push("/chat");
+                    router.push("/");
                     router.refresh();
                   }}
                 >

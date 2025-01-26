@@ -1,8 +1,6 @@
 "use client";
 
 import { startTransition, useMemo, useOptimistic, useState } from "react";
-import { useMutation, useQuery } from "convex/react";
-import { api } from "@/convex/_generated/api";
 
 import { CircleCheck, ChevronDown } from "lucide-react";
 
@@ -17,11 +15,19 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-export function ModelSelector({ className }: React.ComponentProps<typeof Button>) {
+import { useMutation, useQuery } from "convex/react";
+import { api } from "@/convex/_generated/api";
+
+export function ModelSelector({
+  className,
+  selectedModelId,
+}: { selectedModelId: string } & React.ComponentProps<typeof Button>) {
   const [open, setOpen] = useState(false);
 
   const chatModelId = useQuery(api.users.getChatModel) ?? models[0].id;
-  const [optimisticModelId, setOptimisticModelId] = useOptimistic(chatModelId);
+  const [optimisticModelId, setOptimisticModelId] = useOptimistic(
+    chatModelId ?? selectedModelId
+  );
   const updateChatModel = useMutation(api.users.updateChatModel);
 
   const selectedModel = useMemo(
