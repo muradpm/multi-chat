@@ -23,8 +23,10 @@ const schema = defineSchema({
 
   messages: defineTable({
     content: v.string(),
+    role: v.union(v.literal("user"), v.literal("assistant")),
     createdAt: v.number(),
     chatId: v.id("chats"),
+    userId: v.id("users"),
   }).index("by_chat", ["chatId"]),
 });
 
